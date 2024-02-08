@@ -11,39 +11,78 @@ const searchButton = form.querySelector('[type=submit]');
 const galleryElement = document.querySelector('.gallery');
 const moreButton = document.querySelector('.load-more');
 
-getImages('owl', 1)
-  .then(result => {
-    console.log(result);
-    const hits = result.totalHits;
-    console.log(hits);
-    const result2 = result.hits.map(
-      ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      }) => ({
-        webformatURL,
-        largeImageURL,
-        tags,
-        likes,
-        views,
-        comments,
-        downloads,
-      })
-    );
-    console.log(result2);
-    // result2.unschift({ result.totalHits });
-    // console.log(result2);
-    // webformatURL - link do małego obrazka.
-    // largeImageURL - link do dużego obrazka.
-    // tags - wiersz z opisem obrazka. Będzie pasować do atrybutu alt.
-    // likes - liczba “lajków”.
-    // views - liczba wyświetleń.
-    // comments - liczba komentarzy.
-    // downloads - liczba pobrań.
-  })
-  .catch(error => console.log(error));
+searchButton.addEventListener('click', event => {
+  event.preventDefault();
+  const searchKeywords = searchInput.value;
+  const keywords = searchKeywords.split(' ').join('+');
+  console.log('keywords: ', keywords);
+  getImages(keywords, 1)
+    .then(result => {
+      console.log('result: ', result);
+      const hits = result.totalHits;
+      console.log('hits: ', hits);
+      const images = result.hits.map(
+        ({
+          webformatURL,
+          largeImageURL,
+          tags,
+          likes,
+          views,
+          comments,
+          downloads,
+        }) => ({
+          webformatURL,
+          largeImageURL,
+          tags,
+          likes,
+          views,
+          comments,
+          downloads,
+        })
+      );
+      console.log('images: ', images);
+      // result2.unschift({ result.totalHits });
+      // console.log(result2);
+      const galleryImages = images.map(
+        ({
+          webformatURL,
+          largeImageURL,
+          tags,
+          likes,
+          views,
+          comments,
+          downloads,
+        }) => `
+    <div class="photo-card">
+      <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+      <div class="info">
+        <p class="info-item">
+          <b>Likes</b> ${likes}
+        </p>
+        <p class="info-item">
+          <b>Views</b> ${views}
+        </p>
+        <p class="info-item">
+          <b>Comments</b> ${comments}
+        </p>
+        <p class="info-item">
+          <b>Downloads</b> ${downloads}
+        </p>
+      </div>
+    </div>`
+      );
+      const galleryAll = galleryImages.join('');
+      console.log(galleryImages);
+      console.log(galleryAll);
+      galleryElement.insertAdjacentHTML('beforeend', galleryAll);
+    })
+    .catch(error => console.log('error: ', error));
+});
+
+// webformatURL - link do małego obrazka.
+// largeImageURL - link do dużego obrazka.
+// tags - wiersz z opisem obrazka. Będzie pasować do atrybutu alt.
+// likes - liczba “lajków”.
+// views - liczba wyświetleń.
+// comments - liczba komentarzy.
+// downloads - liczba pobrań.
