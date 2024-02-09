@@ -22,6 +22,7 @@ searchButton.addEventListener('click', showGallery);
 moreButton.addEventListener('click', showMore);
 
 async function getImages() {
+  console.log('getImages running');
   const apiKey = '42261128-30c11368cc5a6bd0852de3244';
 
   try {
@@ -35,6 +36,7 @@ async function getImages() {
 }
 
 const showImages = (result) => {
+  console.log('showImages running');
   const galleryImages = result.hits.map(
     ({
       webformatURL,
@@ -68,13 +70,16 @@ const showImages = (result) => {
 }
 
 async function showGallery(event) {
+  console.log("showGallery running");
+  page = 1;
   event.preventDefault();
   const searchKeywords = searchInput.value;
   keywords = searchKeywords.split(' ').join('+');
   galleryElement.innerHTML = ``;
-  getImages(keywords, 1)
+  getImages(keywords, page)
     .then(result => {
       const hits = result.totalHits;
+      console.log("hits: ", hits);
       if (!hits) {
         Promise.reject(
           'Sorry, there are no images matching your search query. Please try again.'
@@ -91,6 +96,7 @@ async function showGallery(event) {
 }
 
 function showMore() {
+  console.log('showMore running');
   // debugger;
   page++;
   getImages()
