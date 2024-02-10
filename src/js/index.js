@@ -48,7 +48,9 @@ const showImages = (result) => {
       downloads,
     }) => `
   <div class="photo-card">
-    <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+    <div class="photo-thumb">
+      <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+    </div>
     <div class="info">
       <p class="info-item">
         <b>Likes</b> ${likes}
