@@ -35,13 +35,6 @@ searchButton.addEventListener('click', showGallery);
 // moreButton.addEventListener('click', showMore);
 
 const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-console.log('document.documentElement: ', document.documentElement);
-console.log(
-  'scrollTop, scrollHeight, clientHeight: ',
-  scrollTop,
-  scrollHeight,
-  clientHeight
-);
 
 async function showGallery(event) {
   event.preventDefault();
