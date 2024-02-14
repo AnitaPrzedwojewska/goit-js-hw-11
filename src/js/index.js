@@ -7,15 +7,17 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 const form = document.querySelector('#search-form');
 const searchInput = form.querySelector('[name=searchQuery]');
 const searchButton = form.querySelector('[type=submit]');
+const errorInfo = document.querySelector('.error');
 const hitsInfo = document.querySelector('.hits');
 const galleryElement = document.querySelector('.gallery');
 const message = document.querySelector('.message');
 const moreButton = document.querySelector('.load-more');
 const bottom = document.querySelector('.bottom');
 
-hitsInfo.style.display = 'none';
-galleryElement.style.display = 'none';
-bottom.style.display = 'none';
+hitsInfo.classList.add('hidden');
+galleryElement.classList.add('hidden');
+bottom.classList.add('hidden');
+moreButton.classList.add('hidden');
 
 const perPage = 40;
 let searchWords;
@@ -26,7 +28,8 @@ let pages;
 const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt' });
 
 searchInput.addEventListener('focus', () => {
-  message.innerHTML = '';
+  errorInfo.innerHTML = '';
+  errorInfo.classList.add('hidden');
 });
 searchButton.addEventListener('click', showGallery);
 moreButton.addEventListener('click', showMore);
@@ -36,11 +39,12 @@ async function showGallery(event) {
   // reset variables
   page = 1;
   pages = 0;
+  hitsInfo.innerHTML = '';
   message.innerHTML = '';
   searchWords = searchInput.value;
   try {
     if (!searchWords) {
-      message.innerHTML = `You didn't enter what you are looking for...
+      errorInfo.innerHTML = `You didn't enter what you are looking for...
       Please, try again.`;
       Notiflix.Notify.warning(`You didn't enter what you are looking for...
       Please, try again.`);
@@ -59,16 +63,22 @@ async function showGallery(event) {
       );
       return;
     }
-    hitsInfo.innerHTML = `We found ${hits} image(s).`
-    Notiflix.Notify.info(`We found ${hits} image(s).`);
+    hitsInfo.innerHTML = `Hooray! We found ${hits} image(s).`;
+    hitsInfo.classList.remove('hidden');
+    Notiflix.Notify.info(`Hooray! We found ${hits} image(s).`);
     pages = Math.floor(hits / 40) + (hits % 40 ? 1 : 0);
     showImages(images);
-    bottom.style.display = 'block';
+    galleryElement.classList.remove('hidden');
+    bottom.classList.remove('hidden');
+    if (pages === 1) {
+      message.innerHTML = `We're sorry, but you've reached the end of search results.`;
+    }
     if (pages > 1) {
-      moreButton.style.display = 'block';
+      moreButton.classList.remove('hidden');
     }
   } catch (error) {
-    message.innerHTML = error.message;
+    errorInfo.innerHTML = error.message;
+    errorInfo.classList.remove('hidden');
     Notiflix.Notify.failure(error.message);
   }
 }
@@ -123,6 +133,6 @@ async function showMore() {
   showImages(images);
   if (page === pages) {
     message.innerHTML = `We're sorry, but you've reached the end of search results.`;
-    moreButton.style.display = 'none';
+    moreButton.classList.add('hidden');
   }
 }
