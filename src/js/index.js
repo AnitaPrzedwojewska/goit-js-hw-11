@@ -32,7 +32,16 @@ searchInput.addEventListener('focus', () => {
   errorInfo.classList.add('hidden');
 });
 searchButton.addEventListener('click', showGallery);
-moreButton.addEventListener('click', showMore);
+// moreButton.addEventListener('click', showMore);
+
+const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+console.log('document.documentElement: ', document.documentElement);
+console.log(
+  'scrollTop, scrollHeight, clientHeight: ',
+  scrollTop,
+  scrollHeight,
+  clientHeight
+);
 
 async function showGallery(event) {
   event.preventDefault();
@@ -73,9 +82,9 @@ async function showGallery(event) {
     if (pages === 1) {
       message.innerHTML = `We're sorry, but you've reached the end of search results.`;
     }
-    if (pages > 1) {
-      moreButton.classList.remove('hidden');
-    }
+    // if (pages > 1) {
+    //   moreButton.classList.remove('hidden');
+    // }
   } catch (error) {
     errorInfo.innerHTML = error.message;
     errorInfo.classList.remove('hidden');
@@ -136,3 +145,14 @@ async function showMore() {
     moreButton.classList.add('hidden');
   }
 }
+
+window.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+    if ((scrollTop + clientHeight >= scrollHeight - 5) && ( page < pages )) {
+      showMore();
+    }
+  },
+  {
+    passive: true,
+  }
+);
