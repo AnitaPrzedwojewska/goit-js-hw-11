@@ -5,6 +5,7 @@
 
 body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 12px;
   background-color: whitesmoke;
 }
 
@@ -17,7 +18,8 @@ img {
   margin: 0 auto;
 }
 
-.btn, .search-input {
+.btn,
+.search-input {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
@@ -42,21 +44,35 @@ img {
   padding: 5px 0;
 }
 .title {
-  font-family: script;
+  font-family: 'Delius Unicase', cursive;
+  font-weight: 400;
+  font-style: normal;
   font-size: 24px;
   color: #fff;
 }
 
 /* ============================ main */
 .main {
-  padding-top: 100px;
+  padding-top: 60px;
   padding-bottom: 20px;
+}
+.hits,
+.message {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  font-weight: bold;
+}
+.hits {
+  color: green;
 }
 .gallery {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 10px;
   margin: 0 auto;
+  padding: 20px;
 }
 .photo-card {
   width: 90%;
@@ -67,31 +83,32 @@ img {
   box-shadow: 4px 4px 8px 0px rgba(99, 99, 99, 0.55);
   overflow: hidden;
 }
-.photo-thumb {
+.photo-card img {
   width: 100%;
-  margin-bottom: 5px;
-  overflow: hidden;
-}
-.photo-thumb img {
+  height: 80%;
   object-fit: cover;
 }
 .info {
   display: flex;
   gap: 5px;
   margin: 10px 5px;
-  font-size: 14px;
 }
 .info-item {
   text-align: center;
 }
-
+.message {
+  color: red;
+}
 /* ============================ bottom */
 .bottom {
   padding-bottom: 20px;
   background-color: #00ab6b;
 }
 .bottom .container {
+  display: flex;
+  justify-content: center;
   margin: 0 auto;
+  padding: 10px;
 }
 /* ============================ media */
 @media screen and (min-width: 375px) {
@@ -99,7 +116,7 @@ img {
     max-width: 375px;
   }
   .photo-card {
-    width: 360px;
+    width: calc((375px - 20px - 15px) / 2);
   }
   .photo-thumb {
     height: 270px;
@@ -115,9 +132,15 @@ img {
   .title {
     order: 1;
   }
+  .photo-card {
+    width: calc((768px - 20px - 30px) / 3);
+  }
 }
 @media screen and (min-width: 1200px) {
   .container {
     max-width: 1200px;
+  }
+  .photo-card {
+    width: calc((1200px - 20px - 45px) / 4);
   }
 }

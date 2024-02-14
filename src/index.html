@@ -5,6 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Page title</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Delius+Unicase:wght@400;700&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css" />
   <script type="module" src="./js/index.js" defer></script>
 </head>
@@ -13,7 +18,7 @@
   <div class="top">
     <div class="container">
       <div class="header">
-        <h1 class="title">Images by Pixabay</h1>
+        <h1 class="title">Photos by Pixabay</h1>
         <form class="search-form" id="search-form">
           <input type="text" class="search-input" name="searchQuery" autocomplete="off" placeholder="what are you looking for..." />
           <button type="submit" class="btn search">Search</button>
@@ -23,9 +28,10 @@
   </div>
   <div class="main">
     <div class="container">
-      <div class="message"></div>
+      <div class="hits"></div>
       <div class="gallery">
       </div>
+      <div class="message"></div>
     </div>
   </div>
   <div class="bottom">
@@ -33,26 +39,6 @@
       <button type="button" class="btn load-more">Load more</button>
     </div>
   </div>
-
-  <!-- <template>
-    <div class="photo-card">
-      <img src="./images/logo.png" alt="logo" loading="lazy" />
-      <div class="info">
-        <p class="info-item">
-          <b>Likes</b>
-        </p>
-        <p class="info-item">
-          <b>Views</b>
-        </p>
-        <p class="info-item">
-          <b>Comments</b>
-        </p>
-        <p class="info-item">
-          <b>Downloads</b>
-        </p>
-      </div>
-    </div>
-  </template> -->
 </body>
 
 </html>
