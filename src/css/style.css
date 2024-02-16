@@ -25,10 +25,6 @@ img {
   display: block;
 }
 
-.hidden {
-  display: none;
-}
-
 .container {
   width: 100%;
   margin: 0 auto;
@@ -96,10 +92,13 @@ img {
 .error {
   color: red;
 }
-.hits,
-.message {
-  color: green;
+.hits {
+  color: dodgerblue;
 }
+.message {
+  color: orangered;
+}
+
 .gallery {
   display: flex;
   justify-content: center;
@@ -146,8 +145,11 @@ img {
   .container {
     max-width: 375px;
   }
+  .gallery {
+    padding: 20px 0;
+  }
   .photo-card {
-    width: calc((375px - 20px - 15px) / 2);
+    width: calc((375px - 20px - 10px) / 2);
   }
   .photo-thumb {
     height: 270px;
@@ -164,7 +166,7 @@ img {
     order: 1;
   }
   .photo-card {
-    width: calc((768px - 20px - 30px) / 3);
+    width: calc((768px - 20px - 20px) / 3);
   }
 }
 @media screen and (min-width: 1200px) {
@@ -172,6 +174,10 @@ img {
     max-width: 1200px;
   }
   .photo-card {
-    width: calc((1200px - 20px - 45px) / 4);
+    width: calc((1200px - 20px - 30px) / 4);
   }
+}
+/* ============================ hidden */
+.hidden {
+  display: none;
 }

@@ -1,12 +1,9 @@
-import axios from 'axios';
-import Notiflix from 'notiflix';
-import 'notiflix/dist/notiflix-3.2.7.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import { getImages } from './pixabay-api';
+import { handleError, handleMessage, handleInfo } from './feedback';
 
 const form = document.querySelector('#search-form');
-const searchInput = form.querySelector('[name=searchQuery]');
-const searchButton = form.querySelector('[type=submit]');
 const errorInfo = document.querySelector('.error');
 const hitsInfo = document.querySelector('.hits');
 const galleryElement = document.querySelector('.gallery');
@@ -14,83 +11,79 @@ const message = document.querySelector('.message');
 const moreButton = document.querySelector('.load-more');
 const bottom = document.querySelector('.bottom');
 
-hitsInfo.classList.add('hidden');
-galleryElement.classList.add('hidden');
-bottom.classList.add('hidden');
-moreButton.classList.add('hidden');
-
 const perPage = 40;
 let searchWords;
 let keywords;
 let page;
 let pages;
-
 const lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt' });
+const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-searchInput.addEventListener('focus', () => {
+resetForNewSearch();
+
+// if there was an error "You didn't enter what you are looking for...",
+// hide the error when the input is active
+form.searchQuery.addEventListener('focus', () => {
   errorInfo.innerHTML = '';
   errorInfo.classList.add('hidden');
 });
-searchButton.addEventListener('click', showGallery);
+
+// send new words for new searching
+form.addEventListener('submit', showGallery);
+
+// get and show more images
 // moreButton.addEventListener('click', showMore);
 
-const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-
-async function showGallery(event) {
-  event.preventDefault();
-  // reset variables
+function resetForNewSearch() {
   page = 1;
   pages = 0;
   hitsInfo.innerHTML = '';
   message.innerHTML = '';
-  searchWords = searchInput.value;
+  galleryElement.innerHTML = ``;
+  hitsInfo.classList.add('hidden');
+  galleryElement.classList.add('hidden');
+  bottom.classList.add('hidden');
+  moreButton.classList.add('hidden');
+}
+
+// show images with keywords in gallery, if it is possible
+async function showGallery(event) {
+  event.preventDefault();
+  // reset variables
+  resetForNewSearch();
+  searchWords = form.searchQuery.value.trim();
   try {
+    // if no words to searching
     if (!searchWords) {
-      errorInfo.innerHTML = `You didn't enter what you are looking for...
-      Please, try again.`;
-      Notiflix.Notify.warning(`You didn't enter what you are looking for...
-      Please, try again.`);
-      return;
-    }
-    keywords = searchWords.split(' ').join('+');
-    galleryElement.innerHTML = ``;
-    const images = await getImages();
-    const hits = images.totalHits;
-    if (!hits) {
-      message.innerHTML = `Sorry, there are no images matching your search query.
-        Please try again.`;
-      Notiflix.Notify.warning(
-        `Sorry, there are no images matching your search query.
-        Please try again.`
+      handleError(
+        errorInfo,
+        `You didn't enter what you are looking for...
+      Please, try again.`
       );
       return;
     }
-    hitsInfo.innerHTML = `Hooray! We found ${hits} image(s).`;
-    hitsInfo.classList.remove('hidden');
-    Notiflix.Notify.info(`Hooray! We found ${hits} image(s).`);
+    keywords = searchWords.split(' ').join('+');
+    const images = await getImages(keywords, page, perPage);
+    const hits = images.totalHits;
+    if (!hits) {
+      handleMessage(message, `Sorry, there are no images matching your search query.
+        Please try again.`);
+      return;
+    }
+    handleInfo(hitsInfo, `Hooray! We found ${hits} image(s).`);
     pages = Math.floor(hits / 40) + (hits % 40 ? 1 : 0);
     showImages(images);
     galleryElement.classList.remove('hidden');
     bottom.classList.remove('hidden');
     if (pages === 1) {
-      message.innerHTML = `We're sorry, but you've reached the end of search results.`;
+      handleMessage(message, `We're sorry, but you've reached the end of search results.`);
     }
     // if (pages > 1) {
     //   moreButton.classList.remove('hidden');
     // }
   } catch (error) {
-    errorInfo.innerHTML = error.message;
-    errorInfo.classList.remove('hidden');
-    Notiflix.Notify.failure(error.message);
+    handleError(errorInfo, error.message);
   }
-}
-
-async function getImages() {
-  const apiKey = '42261128-30c11368cc5a6bd0852de3244';
-  const response = await axios.get(
-    `https://pixabay.com/api/?key=${apiKey}&q=${keywords}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${perPage}`
-  );
-  return response.data;
 }
 
 function showImages(images) {
@@ -131,17 +124,21 @@ function showImages(images) {
 
 async function showMore() {
   page++;
-  const images = await getImages();
+  const images = await getImages(keywords, page, perPage);
   showImages(images);
   if (page === pages) {
-    message.innerHTML = `We're sorry, but you've reached the end of search results.`;
+    handleMessage(`We're sorry, but you've reached the end of search results.`);
     moreButton.classList.add('hidden');
   }
 }
 
-window.addEventListener('scroll', () => {
+// infinity scroll
+// get and show more images, when you go to then end of page
+window.addEventListener(
+  'scroll',
+  () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
-    if ((scrollTop + clientHeight >= scrollHeight - 5) && ( page < pages )) {
+    if (scrollTop + clientHeight >= scrollHeight - 5 && page < pages) {
       showMore();
     }
   },
