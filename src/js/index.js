@@ -8,7 +8,7 @@ const errorInfo = document.querySelector('.error');
 const hitsInfo = document.querySelector('.hits');
 const galleryElement = document.querySelector('.gallery');
 const message = document.querySelector('.message');
-const moreButton = document.querySelector('.load-more');
+const moreButton = document.querySelector('.load-more-btn');
 const bottom = document.querySelector('.bottom');
 
 const perPage = 40;
@@ -66,8 +66,11 @@ async function showGallery(event) {
     const images = await getImages(keywords, page, perPage);
     const hits = images.totalHits;
     if (!hits) {
-      handleMessage(message, `Sorry, there are no images matching your search query.
-        Please try again.`);
+      handleMessage(
+        message,
+        `Sorry, there are no images matching your search query.
+        Please try again.`
+      );
       return;
     }
     handleInfo(hitsInfo, `Hooray! We found ${hits} image(s).`);
@@ -76,7 +79,10 @@ async function showGallery(event) {
     galleryElement.classList.remove('hidden');
     bottom.classList.remove('hidden');
     if (pages === 1) {
-      handleMessage(message, `We're sorry, but you've reached the end of search results.`);
+      handleMessage(
+        message,
+        `We're sorry, but you've reached the end of search results.`
+      );
     }
     // if (pages > 1) {
     //   moreButton.classList.remove('hidden');

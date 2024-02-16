@@ -1,11 +1,14 @@
 :root {
-  --bkg-color: #12372a;
-  --bkg: #fbfada;
-  --btn-color: #adbc9f;
-  --btn-accent: #436850;
+  --bkg-color: dodgerblue; /* #12372a; */
+  --bkg-color-1: darkslategray /* dodgerblue */;
+  --bkg-color-2: teal /* lawngreen */;
+  --bkg: #eee; /* #fbfada; */
+  --btn-color: #ddd;
+  --btn-accent: #bbb;
 }
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -31,24 +34,18 @@ img {
 }
 
 .btn,
-.search-input {
+.input {
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
+  display: flex;
   height: 32px;
-  padding: 5px 15px;
+  padding: 8px 15px;
   border: none;
-  border-radius: 100px;
-}
-.search-input {
-  width: 240px;
-  height: 24px;
-  border-radius: 100px;
 }
 .btn {
   cursor: pointer;
   background-color: var(--btn-color);
-  border: 1px solid #aaa;
 }
 .btn:focus,
 .btn:hover {
@@ -56,16 +53,44 @@ img {
 }
 /* ============================ top */
 .top {
-  background-color: var(--bkg-color);
   position: fixed;
   width: 100%;
+  padding: 20px 0;
+  background-color: var(--bkg-color);
+  background-image: linear-gradient(
+    to right,
+    var(--bkg-color-1),
+    var(--bkg-color-2)
+  );
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 5px 0;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+.search-form {
+  display: flex;
+  align-items: center;
+}
+.search-input {
+  width: 240px;
+  margin-right: 0;
+  border-radius: 100px 0 0 100px;
+}
+.search-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  margin-left: 0;
+  padding: 0;
+  border-radius: 0 100px 100px 0;
+}
+.search-icon {
+  width: 24px;
+  height: 24px;
 }
 
 .title {
@@ -78,7 +103,7 @@ img {
 
 /* ============================ main */
 .main {
-  padding-top: 60px;
+  padding-top: 80px;
   padding-bottom: 20px;
 }
 .error,
@@ -133,6 +158,11 @@ img {
 .bottom {
   padding-bottom: 20px;
   background-color: var(--bkg-color);
+  background-image: linear-gradient(
+    to right,
+    var(--bkg-color-1),
+    var(--bkg-color-2)
+  );
 }
 .bottom .container {
   display: flex;
@@ -140,6 +170,7 @@ img {
   margin: 0 auto;
   padding: 10px;
 }
+
 /* ============================ media */
 @media screen and (min-width: 375px) {
   .container {
@@ -158,6 +189,10 @@ img {
 @media screen and (min-width: 768px) {
   .container {
     max-width: 768px;
+  }
+  .header {
+    flex-direction: row;
+    justify-content: space-between;
   }
   .search-form {
     order: 0;
