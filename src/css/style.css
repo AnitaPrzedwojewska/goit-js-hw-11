@@ -150,9 +150,15 @@ img {
   display: flex;
   gap: 5px;
   margin: 10px 5px;
+  font-size: 10px;
 }
 .info-item {
   text-align: center;
+}
+.icon {
+  color: #000;
+  width: 16px;
+  height: 16px;
 }
 /* ============================ bottom */
 .bottom {
@@ -179,10 +185,7 @@ img {
   .gallery {
     padding: 20px 0;
   }
-  .photo-card {
-    width: calc((375px - 20px - 10px) / 2);
-  }
-  .photo-thumb {
+  .photo-card img {
     height: 270px;
   }
 }
@@ -201,15 +204,29 @@ img {
     order: 1;
   }
   .photo-card {
-    width: calc((768px - 20px - 20px) / 3);
+    width: calc((768px - 20px - 10px) / 2);
+  }
+  .info {
+    font-size: 12px;
   }
 }
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1024px) {
   .container {
-    max-width: 1200px;
+    max-width: 1024px;
   }
   .photo-card {
-    width: calc((1200px - 20px - 30px) / 4);
+    width: calc((1024px - 20px - 20px) / 3);
+  }
+}
+@media screen and (min-width: 1440px) {
+  .container {
+    max-width: 1440px;
+  }
+  .photo-card {
+    width: calc((1440px - 20px - 30px) / 4);
+  }
+  .info {
+    font-size: 12px;
   }
 }
 /* ============================ hidden */
