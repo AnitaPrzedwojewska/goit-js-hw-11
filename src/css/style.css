@@ -148,9 +148,9 @@ img {
 }
 .info {
   display: flex;
-  gap: 5px;
+  justify-content: space-around;
   margin: 10px 5px;
-  font-size: 10px;
+  font-size: 12px;
 }
 .info-item {
   text-align: center;
@@ -186,7 +186,7 @@ img {
     padding: 20px 0;
   }
   .photo-card img {
-    height: 270px;
+    height: 250px;
   }
 }
 @media screen and (min-width: 768px) {
@@ -205,9 +205,6 @@ img {
   }
   .photo-card {
     width: calc((768px - 20px - 10px) / 2);
-  }
-  .info {
-    font-size: 12px;
   }
 }
 @media screen and (min-width: 1024px) {

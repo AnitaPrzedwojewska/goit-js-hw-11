@@ -110,19 +110,19 @@ function showImages(images) {
     <div class="info">
       <p class="info-item">
         <b>Likes</b>
-        ${likes}
+        <br>${likes}
       </p>
       <p class="info-item">
         <b>Views</b>
-        ${views}
+        <br>${views}
       </p>
       <p class="info-item">
         <b>Comments</b>
-        ${comments}
+        <br>${comments}
       </p>
       <p class="info-item">
         <b>Downloads</b>
-        ${downloads}
+        <br>${downloads}
       </p>
     </div>
   </div>`
@@ -137,7 +137,10 @@ async function showMore() {
   const images = await getImages(keywords, page, perPage);
   showImages(images);
   if (page === pages) {
-    handleMessage(`We're sorry, but you've reached the end of search results.`);
+    handleMessage(
+      message,
+      `We're sorry, but you've reached the end of search results.`
+    );
     moreButton.classList.add('hidden');
   }
 }
