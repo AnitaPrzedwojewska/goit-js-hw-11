@@ -3,12 +3,13 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import { getImages } from './pixabay-api';
 import { handleError, handleMessage, handleInfo } from './feedback';
 
+const top = document.querySelector('.top');
 const form = document.querySelector('#search-form');
 const errorInfo = document.querySelector('.error');
 const hitsInfo = document.querySelector('.hits');
 const galleryElement = document.querySelector('.gallery');
 const message = document.querySelector('.message');
-const moreButton = document.querySelector('.load-more-btn');
+// const moreButton = document.querySelector('.load-more-btn');
 const bottom = document.querySelector('.bottom');
 
 const perPage = 40;
@@ -23,10 +24,14 @@ resetForNewSearch();
 
 // if there was an error "You didn't enter what you are looking for...",
 // hide the error when the input is active
-form.searchQuery.addEventListener('focus', () => {
+form.searchQuery.addEventListener('focus', () => nazwaFunkcji);
+form.searchQuery.addEventListener('click', () => nazwaFunkcji);
+
+function nazwaFunkcji() {
   errorInfo.innerHTML = '';
   errorInfo.classList.add('hidden');
-});
+  form.searchQuery.value = '';
+}
 
 // send new words for new searching
 form.addEventListener('submit', showGallery);
@@ -37,13 +42,14 @@ form.addEventListener('submit', showGallery);
 function resetForNewSearch() {
   page = 1;
   pages = 0;
+  top.classList.add('full');
   hitsInfo.innerHTML = '';
   message.innerHTML = '';
   galleryElement.innerHTML = ``;
   hitsInfo.classList.add('hidden');
   galleryElement.classList.add('hidden');
-  bottom.classList.add('hidden');
-  moreButton.classList.add('hidden');
+  // bottom.classList.add('hidden');
+  // moreButton.classList.add('hidden');
 }
 
 // show images with keywords in gallery, if it is possible
@@ -65,6 +71,7 @@ async function showGallery(event) {
     keywords = searchWords.split(' ').join('+');
     const images = await getImages(keywords, page, perPage);
     const hits = images.totalHits;
+    top.classList.remove('full');
     if (!hits) {
       handleMessage(
         message,
@@ -73,11 +80,11 @@ async function showGallery(event) {
       );
       return;
     }
-    handleInfo(hitsInfo, `Hooray! We found ${hits} image(s).`);
+    handleInfo(hitsInfo, `We found ${hits} image(s).`);
     pages = Math.floor(hits / 40) + (hits % 40 ? 1 : 0);
     showImages(images);
     galleryElement.classList.remove('hidden');
-    bottom.classList.remove('hidden');
+    // bottom.classList.remove('hidden');
     if (pages === 1) {
       handleMessage(
         message,
@@ -141,7 +148,7 @@ async function showMore() {
       message,
       `We're sorry, but you've reached the end of search results.`
     );
-    moreButton.classList.add('hidden');
+    // moreButton.classList.add('hidden');
   }
 }
 
