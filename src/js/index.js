@@ -48,7 +48,6 @@ function resetForNewSearch() {
   galleryElement.innerHTML = ``;
   hitsInfo.classList.add('hidden');
   galleryElement.classList.add('hidden');
-  // bottom.classList.add('hidden');
   // moreButton.classList.add('hidden');
 }
 
@@ -70,8 +69,8 @@ async function showGallery(event) {
     }
     keywords = searchWords.split(' ').join('+');
     const images = await getImages(keywords, page, perPage);
+    console.log('images: ', images);
     const hits = images.totalHits;
-    top.classList.remove('full');
     if (!hits) {
       handleMessage(
         message,
@@ -84,7 +83,6 @@ async function showGallery(event) {
     pages = Math.floor(hits / 40) + (hits % 40 ? 1 : 0);
     showImages(images);
     galleryElement.classList.remove('hidden');
-    // bottom.classList.remove('hidden');
     if (pages === 1) {
       handleMessage(
         message,

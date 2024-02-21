@@ -7,5 +7,3 @@ export async function getImages(keywords, page, perPage) {
   );
   return response.data;
 }
-
-// export { getImages };
